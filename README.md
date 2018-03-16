@@ -1,4 +1,4 @@
-项目相关技术 react 16， react-router4, redux
+项目相关技术 react 16， react-router4, redux<br>
 组件按需加载：/Router/index.js
 jsonp 封装和使用，本demo 调了百度的查询api做示例
 
