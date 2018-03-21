@@ -4,12 +4,15 @@ import { bindActionCreators } from 'redux'
 import * as numAction from '../redux/action/index'
 import  SearchData from '../components/searchData/searchData'
 import jsonp from '../common/jsonp'
-import axios from 'axios'
+import { Button,Col, Row,Input,List } from 'antd';
 
 class Home extends React.Component {
     constructor(props){
         super(props);
         this.store = this.props.store;
+        this.state={
+            meList:[]
+        };
     }
 
     render(){
@@ -17,20 +20,43 @@ class Home extends React.Component {
             <div className="wrap">
                 <h1>Home Page !</h1>
                 <p>now ,this num is : { this.props.nowNum }</p>
-                <button onClick={ this.addOnceNum.bind(this) }> Add one</button>
-                <button onClick={ this.reduceOneNum.bind(this) }> reduce one</button>
-                <div>
-                    <label htmlFor="search">
-                        <input type="text" id="search" ref="search" onChange={ this.search.bind(this) }/>
-                    </label>
-                    <SearchData/>
+                <div style={{marginTop:"30PX"}}>
+                <Row>
+                    <Col span={12}><Button type="primary"  onClick={ this.addOnceNum.bind(this) }>计数增加1</Button></Col>
+                    <Col span={12}><Button onClick={ this.reduceOneNum.bind(this) }>计数减少1</Button></Col>
+                </Row>
                 </div>
+                <div style={{marginTop:"30PX"}}>
+                    <Row>
+                        <Col span={20} offset={2}>
+                            <label htmlFor="search">
+                                <Input id="search" placeholder="输入搜索内容" onChange={ this.search.bind(this) } size="large"/>
+                            </label>
+                        </Col>
+                        <Col span={12} offset={2}>
+                            <div>
+                                <SearchData/>
+                            </div>
+
+                        </Col>
+                    </Row>
+                </div>
+
             </div>
         )
     }
 
-    componentDidMount(){
 
+    componentDidMount(){
+        console.log(this.state.meList);
+        this.getDefaultKeyWord()
+    }
+
+    getDefaultKeyWord(){
+        var k = this.props.keyword;
+        if(k){
+            document.getElementById('search').value = k;
+        }
     }
 
     addOnceNum(){
@@ -47,7 +73,8 @@ class Home extends React.Component {
 
 
     search(){
-        let val = this.refs.search?this.refs.search.value:"";
+        let val = document.getElementById('search').value;
+        // let val = this.refs.search?this.refs.search.value:"";
         if(val){
             let url1 = 'http://suggestion.baidu.com/su';
             let baiduParams = {
@@ -66,17 +93,22 @@ class Home extends React.Component {
             };
             jsonp(url1,baiduParams, options)
             .then(res=>{
+                this.setState({
+                    meList:res.s
+                });
                 this.props.changeNum.httpGet({ list:  res.s});
             })
         }else{
             this.props.changeNum.httpGet({ list:  []});
         }
+        this.props.changeNum.setKeyWord({ keyWord:val });
     }
 }
 
 function mapStateToProps(state){
     return{
-        nowNum : state.change_num.num
+        nowNum : state.change_num.num,
+        keyword:state.getHttpInfo.keyWord
     }
 }
 

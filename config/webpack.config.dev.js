@@ -115,9 +115,9 @@ module.exports = {
             options: {
               formatter: eslintFormatter,
               eslintPath: require.resolve('eslint'),
-              
             },
             loader: require.resolve('eslint-loader'),
+
           },
         ],
         include: paths.appSrc,
@@ -136,7 +136,7 @@ module.exports = {
             options: {
               limit: 10000,
               name: 'static/media/[name].[hash:8].[ext]',
-            },
+            }
           },
           // Process JS with Babel.
           {
@@ -144,7 +144,9 @@ module.exports = {
             include: paths.appSrc,
             loader: require.resolve('babel-loader'),
             options: {
-              
+              plugins: [
+                  ["import", { libraryName: "antd", "style": "css"}] // `style: true` 会加载 less 文件
+              ],
               // This is a feature of `babel-loader` for webpack (not Babel itself).
               // It enables caching results in ./node_modules/.cache/babel-loader/
               // directory for faster rebuilds.
@@ -157,7 +159,7 @@ module.exports = {
           // In production, we use a plugin to extract that CSS to a file, but
           // in development "style" loader enables hot editing of CSS.
           {
-            test: /\.(css|less)$/,
+            test: /\.css$/,
             use: [
               require.resolve('style-loader'),
               {
@@ -166,12 +168,6 @@ module.exports = {
                   importLoaders: 1,
                 },
               },
-                {
-                    loader: require.resolve('less-loader'),
-                    options: {
-                        importLoaders: 1,
-                    },
-                },
               {
                 loader: require.resolve('postcss-loader'),
                 options: {
@@ -193,6 +189,24 @@ module.exports = {
                 },
               },
             ],
+          },
+          {
+            test: /\.less$/,
+            use: [
+                require.resolve('style-loader'),
+                {
+                    loader: require.resolve('css-loader'),
+                    options: {
+                        importLoaders: 1,
+                    },
+                },
+                {
+                    loader: require.resolve('less-loader'),
+                    options: {
+                        importLoaders: 1,
+                    },
+                }
+            ]
           },
           // "file" loader makes sure those assets get served by WebpackDevServer.
           // When you `import` an asset, you get its (virtual) filename.
@@ -216,6 +230,7 @@ module.exports = {
       // Make sure to add the new loader(s) before the "file" loader.
     ],
   },
+
   plugins: [
     // Makes some environment variables available in index.html.
     // The public URL is available as %PUBLIC_URL% in index.html, e.g.:

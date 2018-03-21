@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import './static/less/app.less';
 import Header from "./components/header/index";
 import { Link } from 'react-router-dom'
+import './static/less/app.less';
+import { Col, Row } from 'antd'
 
 class App extends Component {
   render() {
@@ -12,11 +13,11 @@ class App extends Component {
             { this.props.children }
         </div>
         <footer>
-            <div className="links">
-                <Link to='/'>Home</Link>
-                <Link to='/info'>INFO</Link>
-                <Link to='/list'>LIST</Link>
-            </div>
+            <Row>
+                <Col span={8}><Link to='/'>Home</Link></Col>
+                <Col span={8}><Link to='/info'>INFO</Link></Col>
+                <Col span={8}><Link to='/list'>LIST</Link></Col>
+            </Row>
         </footer>
       </div>
     );

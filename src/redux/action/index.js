@@ -2,6 +2,7 @@ export const ADD_SET = 'ADD_SET';
 export const DEC_SET = 'DEC_SET';
 export const CHANAGE_SET = 'CHANAGE_SET';
 export const HTTP_GET = 'HTTP_GET';
+export const KEYWORD_SET = 'KEYWORD_SET';
 
 export function addNum(data) {
     return{
@@ -27,6 +28,13 @@ export function chanageNum(data){
 export function httpGet(data){
     return {
         type:HTTP_GET,
+        data
+    }
+}
+
+export function setKeyWord(data){
+    return {
+        type:KEYWORD_SET,
         data
     }
 }

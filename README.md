@@ -2,6 +2,7 @@
 组件按需加载：<b>/Router/index.js</b><br>
 jsonp 封装和使用，本demo 调了百度的查询api做示例<br>
 
+并添加了Antd ，已配置按需加载antd组件
 
 安装 <br>
 <b>yarn install</b>  或者 <b>npm install</b> ，推荐前者，本demo用的 yarn<br>

@@ -1,5 +1,6 @@
 import React from  'react';
 import { connect } from 'react-redux'
+import { List } from 'antd';
 import './style.less'
 
 
@@ -10,13 +11,14 @@ class SearchData extends React.Component {
 
     render(){
         return(
-            <ul>
-                {
-                    this.props.list.length?this.props.list.map((val,index)=>{
-                        return <li key={'s'+index}> { val }</li>
-                    }) : null
-                }
-            </ul>
+            <div className={this.props.list.length>0 ? '' : 'hide'}>
+                <List
+                    header={<div>搜索结果</div>}
+                    bordered
+                    dataSource={this.props.list}
+                    renderItem={item => (<List.Item>{item}</List.Item>)}
+                />
+            </div>
         )
     }
 
