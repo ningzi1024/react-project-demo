@@ -150,7 +150,9 @@ module.exports = {
             include: paths.appSrc,
             loader: require.resolve('babel-loader'),
             options: {
-              
+                plugins: [
+                    ["import", { libraryName: "antd", "style": "css"}] // `style: true` 会加载 less 文件
+                ],
               compact: true,
             },
           },
@@ -167,7 +169,7 @@ module.exports = {
           // use the "style" loader inside the async code so CSS from them won't be
           // in the main CSS file.
           {
-            test: /\.(css|less)$/,
+            test: /\.css$/,
             loader: ExtractTextPlugin.extract(
               Object.assign(
                 {
@@ -185,14 +187,6 @@ module.exports = {
                         minimize: true,
                         sourceMap: shouldUseSourceMap,
                       },
-                    },
-                    {
-                        loader: require.resolve('less-loader'),
-                        options: {
-                            importLoaders: 1,
-                            minimize: true,
-                            sourceMap: shouldUseSourceMap,
-                        },
                     },
                     {
                       loader: require.resolve('postcss-loader'),
@@ -220,6 +214,24 @@ module.exports = {
               )
             ),
             // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.
+          },
+          {
+            test: /\.less$/,
+            use: [
+                require.resolve('style-loader'),
+                {
+                    loader: require.resolve('css-loader'),
+                    options: {
+                        importLoaders: 1,
+                    },
+                },
+                {
+                    loader: require.resolve('less-loader'),
+                    options: {
+                        importLoaders: 1,
+                    },
+                }
+            ]
           },
           // "file" loader makes sure assets end up in the `build` folder.
           // When you `import` an asset, you get its filename.
